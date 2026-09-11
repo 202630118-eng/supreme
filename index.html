@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오늘의 명언</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+
+        .container {
+            background: #ffffff;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .img-box {
+            width: 100%;
+            height: 250px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background-color: #e0e0e0;
+        }
+
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .quote-box {
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .quote {
+            font-size: 1.15rem;
+            font-weight: 500;
+            line-height: 1.6;
+            color: #34495e;
+            word-break: keep-all;
+            margin-bottom: 10px;
+        }
+
+        .author {
+            font-size: 0.95rem;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>✨ 오늘의 명언 ✨</h1>
+        
+        <div class="img-box">
+            <img id="quote-img" src="" alt="명언 관련 이미지">
+        </div>
+
+        <div class="quote-box">
+            <p id="quote" class="quote">버튼을 눌러 오늘의 명언을 확인해보세요!</p>
+            <p id="author" class="author"></p>
+        </div>
+
+        <button class="btn" onclick="getRandomQuote()">오늘의 명언 보기</button>
+    </div>
+
+    <script>
+        // 명언 및 이미지 데이터 목록
+        const quotes = [
+            {
+                quote: "삶이 있는 한 희망은 있다.",
+                author: "- 키케로 -",
+                image: "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=600&auto=format&fit=crop"
+            },
+            {
+                quote: "산다는것 그것은 변한다는 것이고, 변한다는 것은 성숙하다는 것이며, 성숙한다는 것은 끊임없이 새로운 자신을 창조해 나가는 것이다.",
+                author: "- 앙리 베르그송 -",
+                image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop"
+            },
+            {
+                quote: "언제나 화면을 향해 웃어라. 세상도 너를 향해 웃을 것이다.",
+                author: "- 찰리 채플린 -",
+                image: "https://images.unsplash.com/photo-1499209974431-9dac3cea0047?w=600&auto=format&fit=crop"
+            },
+            {
+                quote: "성공은 매일 반복한 작은 노력들의 합이다.",
+                author: "- 로버트 콜리어 -",
+                image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&auto=format&fit=crop"
+            },
+            {
+                quote: "행복은 습관이다. 그것을 몸에 익혀라.",
+                author: "- 허버트 허버드 -",
+                image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&auto=format&fit=crop"
+            },
+            {
+                quote: "어제와 똑같은 삶을 살면서 다른 미래를 기대하는 것은 정신병이다.",
+                author: "- 알베르트 아인슈타인 -",
+                image: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?w=600&auto=format&fit=crop"
+            }
+        ];
+
+        let lastIndex = -1;
+
+        function getRandomQuote() {
+            let randomIndex;
+            
+            // 이전과 연속으로 같은 명언이 나오지 않도록 처리
+            do {
+                randomIndex = Math.floor(Math.random() * quotes.length);
+            } while (randomIndex === lastIndex);
+
+            lastIndex = randomIndex;
+
+            const selected = quotes[randomIndex];
+
+            // 화면 요소 업데이트
+            const imgElement = document.getElementById('quote-img');
+            
+            // 페이드 효과를 위한 서서히 나타나기
+            imgElement.style.opacity = '0.3';
+            setTimeout(() => {
+                imgElement.src = selected.image;
+                imgElement.style.opacity = '1';
+            }, 150);
+
+            document.getElementById('quote').innerText = `"${selected.quote}"`;
+            document.getElementById('author').innerText = selected.author;
+        }
+
+        // 페이지가 처음 로드될 때 자동으로 첫 명언 출력
+        window.onload = getRandomQuote;
+    </script>
+</body>
+</html>
